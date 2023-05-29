@@ -999,9 +999,9 @@ func (p *Plex) GetSections(machineID string) ([]ServerSections, error) {
 
 // GetLibraries of your Plex server. My ideal use-case would be
 // to get library count to determine label index
-func (p *Plex) GetLibraries(validate bool) (LibrarySections, error) {
+func (p *Plex) GetLibraries(validate_ssl bool) (LibrarySections, error) {
 
-	if validate == false {
+	if !validate_ssl {
 		http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	}
 	query := fmt.Sprintf("%s/library/sections", p.URL)
