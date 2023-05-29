@@ -3,6 +3,7 @@ package plex
 // plex is a Plex Media Server and Plex.tv client
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"encoding/xml"
 	"errors"
@@ -998,7 +999,11 @@ func (p *Plex) GetSections(machineID string) ([]ServerSections, error) {
 
 // GetLibraries of your Plex server. My ideal use-case would be
 // to get library count to determine label index
-func (p *Plex) GetLibraries() (LibrarySections, error) {
+func (p *Plex) GetLibraries(validate bool) (LibrarySections, error) {
+
+	if validate == false {
+		http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+	}
 	query := fmt.Sprintf("%s/library/sections", p.URL)
 
 	resp, err := p.get(query, p.Headers)
