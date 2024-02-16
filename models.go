@@ -97,6 +97,12 @@ type boolOrInt struct {
 }
 
 func (b *boolOrInt) UnmarshalJSON(data []byte) error {
+
+	if string(data) == "{}" {
+		b.bool = true
+		return nil
+	}
+
 	var isInt int
 
 	if err := json.Unmarshal(data, &isInt); err == nil {
